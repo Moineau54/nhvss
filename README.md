@@ -1,5 +1,20 @@
 # nhvss_python
 
+## Table of contents
+
+- [nhvss\_python](#nhvss_python)
+  - [Table of contents](#table-of-contents)
+  - [What is nhvss ?](#what-is-nhvss-)
+  - [How it works ?](#how-it-works-)
+  - [Pre-requisites](#pre-requisites)
+  - [How to install ?](#how-to-install-)
+    - [on Debian based systems](#on-debian-based-systems)
+    - [on RedHat based systems](#on-redhat-based-systems)
+    - [on Arch based systems](#on-arch-based-systems)
+    - [on fedora based systems](#on-fedora-based-systems)
+    - [How to use it ?](#how-to-use-it-)
+  - [Warning](#warning)
+
 ## What is nhvss ?
 
 Nhvss (**N**map **H**ost **V**ulnerability **S**canner **S**cript) is a python tool that allows you to scan a network for vulnerabilities. It uses Nmap to scan the network and uses the **vulners** script to scan the discovered hosts for vulnerabilities.
@@ -69,7 +84,7 @@ python /path/to/nhvss.py
 
 The script will then ask you if you want to additionally scan the hosts for vulnerabilities. If you want to scan the hosts for vulnerabilities type **y** and press enter. If you don't want to scan the hosts for vulnerabilities type **n** and press enter.
 
-## **Warning**
+## Warning
 
 The script is still in development and may not work as intended. If you encounter any bugs or have any suggestions please let me know.
 
