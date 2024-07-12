@@ -20,6 +20,11 @@ path = os.getcwd()
 os.system("cd " + path)
 vuln_scan = vuln_scan_switch()
 
+if os.listdir(os.getcwd()).__contains__("config.txt") == False:
+    with open("config.txt", "w") as file:
+        file.close()
+
+
 content = []
 
     
@@ -57,7 +62,7 @@ for i in range(1, 255):
         content.append(ip + " | " + host + "\n")
         #os.system("echo " + ip + " | " + host + " >> hosts.txt")
 
-        time.sleep(10)
+        time.sleep(1)
 
 file_name = time.strftime("%Y-%m-%d_%H-%M-%S") + "_hosts.txt"
 os.system("touch /scan_history" + file_name)
@@ -69,7 +74,7 @@ with open("config.txt", "r") as file:
     content = file.read()
     file.close()
 
-if "newest scan = " in content:
+if content.__contains__("newest scan = "):
     # delets the config file and recreates it with the new file name
     os.system("rm config.txt")
     with open("config.txt", "w") as file:
