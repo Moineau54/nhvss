@@ -79,6 +79,7 @@ git clone https://github.com/Moineau54/nhvss_python.git
 Run the script by running the following command:
 
 ```bash
+# You have to launch the script from the git repository
 python /path/to/nhvss.py
 ```
 
