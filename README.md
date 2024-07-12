@@ -17,7 +17,7 @@
 
 ## What is nhvss ?
 
-Nhvss (**N**map **H**ost **V**ulnerability **S**canner **S**cript) is a python tool that allows you to scan a network for vulnerabilities. It uses Nmap to scan the network and uses the **vulners** script to scan the discovered hosts for vulnerabilities.
+Nhvss (**N**map **H**ost **V**ulnerability **S**canner **S**cript) is a python tool that allows you to scan a network for vulnerabilities. It uses [Nmap](https://nmap.org/book/man.html#man-description) to scan the network and uses the **vulners** script to scan the discovered hosts for vulnerabilities.
 
 ## How it works ?
 
