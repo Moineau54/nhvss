@@ -1,1 +1,0 @@
-newest scan = scan_history/2024-07-12_14-56-09_hosts.txt
