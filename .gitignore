@@ -2,3 +2,7 @@ config.txt
 *.txt
 scanned_hosts/*.txt
 scan_history/*.txt
+
+# cache files
+**/**/__pycache__/
+__pycache__/
