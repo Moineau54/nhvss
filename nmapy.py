@@ -44,15 +44,6 @@ for i in range(1, 255):
     else:
         os.system("sudo nmap -sS " + ip)
         
-        # if not os.path.isfile("hosts.txt"):
-        #     os.system("touch hosts.txt")
-        #     host_created = True
-        # else:
-        #     # rename the file to YYYY-MM-DD_HH-Minutes-Seconds_hosts.txt in the folder scan_history
-        #     if host_created:
-        #         shutil.move("hosts.txt", "scan_history/" + time.strftime("%Y-%m-%d_%H-%M-%S") + "_hosts.txt")
-        #     os.system("touch hosts.txt")
-        
         host = os.popen("host " + ip).read().split(" ")[4]
         host = host.split("\n")[0]
         print("The host is: " + host)
@@ -60,8 +51,6 @@ for i in range(1, 255):
         
         
         content.append(ip + " | " + host + "\n")
-        #os.system("echo " + ip + " | " + host + " >> hosts.txt")
-
         time.sleep(1)
 
 file_name = time.strftime("%Y-%m-%d_%H-%M-%S") + "_hosts.txt"
@@ -75,7 +64,6 @@ with open("config.txt", "r") as file:
     file.close()
 
 if content.__contains__("newest scan = "):
-    # delets the config file and recreates it with the new file name
     os.system("rm config.txt")
     with open("config.txt", "w") as file:
         file.write("newest scan = scan_history/" + file_name)
