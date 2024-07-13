@@ -1,90 +1,126 @@
 import os
 import time
 import vulnerability_scan
-import shutil
+
+from pathlib import Path
 
 
-def vuln_scan_switch():
-    user_input = str(input("Would you to scan for vulnerabilities? (y/n): "))
-    if user_input == "y":
+def vuln_scan_switch() -> bool:
+    """
+    Toggle vulnerability scans on or off.
+
+    Returns:
+    bool: True if the input is 'y', False if it is 'N'.
+
+    Will retry the question for invalid input.
+    """
+    while True:
+        user_input = (
+            input("Would you to scan for vulnerabilities? (y/n): ").strip().lower()
+        )
+
+        if user_input not in ["y", "n"]:
+            print("Invalid input. Please enter 'y' or 'n'.")
+        else:
+            break
+
+    # Assign based on user input
+    vuln_scan = True if user_input.lower() == "y" else False
+
+    if vuln_scan:
         print("The computer will scan for vulnerabilities")
-        vuln_scan = True
     else:
         print("The computer will not scan for vulnerabilities")
-        vuln_scan = False
+
     return vuln_scan
 
 
+def validate_ip(ip: str) -> bool:
+    """
+    Check if the input is a valid IPv4 adress.
 
-path = os.getcwd()
-os.system("cd " + path)
+    Args:
+    ip (str): The string of the IP address to validate.
+
+    Returns:
+    bool: True if the IP address is valid, False otherwise.
+    """
+    # Check if each part of the ip address is an integer in a valid range of 0 to 255.
+    try:
+        return all(0 <= int(part) < 256 for part in ip.split("."))
+    except ValueError:
+        return False
+
+
 vuln_scan = vuln_scan_switch()
 
-if os.listdir(os.getcwd()).__contains__("config.txt") == False:
-    with open("config.txt", "w") as file:
-        file.close()
-
+# Create config.txt if it does not exist.
+if not Path.cwd().rglob("config.txt"):
+    Path("config.txt").touch()
 
 content = []
 
-    
-os.system("clear")
 print("Scanning the network")
 
-os.system("ip a")
-ip = str(input("Enter the ip address of the network you would like to scan: "))
+while True:
+    ip = input("Enter the ip address of the network you would like to scan: ")
 
-ip1 = ip.split(".")[0]
-ip2 = ip.split(".")[1]
-ip3 = ip.split(".")[2]
+    if not validate_ip(ip):
+        print("Invalid Ipv4 format. Try again.")
+    else:
+        break
 
-ip = ip1 + "." + ip2 + "." + ip3 + "."
-for i in range(0, 255):
-    ip_scan = ip + str(i)
+# Construct base IP address by taking the first three octets from the user's input
+base_ip = "{}.{}.{}.{}".format(*ip.split(".")[:3])
+
+# Iterate over last octet to scan the whole subnet
+for i in range(256):
+    ip_scan = "{}.{}".format(base_ip, i)
     print("Scanning " + ip_scan)
-    os.system("sudo nmap -sS " + ip_scan)
-
-
-    response = os.popen("sudo nmap -sS " + ip_scan).read()
+    response = os.popen("sudo nmap -sS {}".format(ip_scan)).read()
 
     if "Host seems down" in response:
-        print(ip + " is down \n")
+        print("{} is down\n".format(ip_scan))
     else:
-        os.system("sudo nmap -sS " + ip_scan)
-        
-        host = os.popen("host " + ip_scan).read().split(" ")[4]
-        host = host.split("\n")[0]
-        print("The host is: " + host)
-        
-        
-        
-        content.append(ip + " | " + host + "\n")
+        host_info = os.popen("host {}".format(ip_scan)).read()
+        host_line = host_info.split("\n")[0].split()[
+            4
+        ]  # Assuming the 5th word is the hostname
+        print("The host is: " + host_line)
+
+        # Append IP address and its status to content list
+        content.append(
+            "{} | {}{}\n".format(
+                ip_scan, host_line, " is up" if not "down" in response else ""
+            )
+        )
         time.sleep(1)
 
 file_name = time.strftime("%Y-%m-%d_%H-%M-%S") + "_hosts.txt"
-os.system("touch /scan_history" + file_name)
-with open("scan_history/" + file_name, "w") as file:
-    file.close()
+# Create scan_history directory if it does not exist.
+scan_history_dir = Path("scan_history")
+scan_history_dir.mkdir(parents=True, exist_ok=True)
 
+file_path = scan_history_dir / file_name
+file_path.touch()
 
 with open("config.txt", "r") as file:
     content = file.read()
-    file.close()
 
 if content.__contains__("newest scan = "):
-    os.system("rm config.txt")
     with open("config.txt", "w") as file:
         file.write("newest scan = scan_history/" + file_name)
-        file.close()
 else:
     with open("config.txt", "w") as file:
         file.write("newest scan = scan_history/" + file_name)
-        file.close()
 
-with open("scan_history/" + file_name, "a") as file:
-    for i in range(len(content)):
-        file.write(content[i])
-    file.close()
+try:
+    with open("scan_history/" + file_name, "a") as file:
+        file.write(content)
+except FileNotFoundError:
+    print("Error: File {} not found!")
+    exit(1)
+
 print(ip + " is up \n")
 print("Scan completed")
 
