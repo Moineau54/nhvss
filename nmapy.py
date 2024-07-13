@@ -31,20 +31,28 @@ content = []
 os.system("clear")
 print("Scanning the network")
 
-for i in range(1, 255):
-    ip = "192.168.178." + str(i)
-    print("Scanning " + ip)
-    os.system("sudo nmap -sS " + ip)
+os.system("ip a")
+ip = str(input("Enter the ip address of the network you would like to scan: "))
+
+ip1 = ip.split(".")[0]
+ip2 = ip.split(".")[1]
+ip3 = ip.split(".")[2]
+
+ip = ip1 + "." + ip2 + "." + ip3 + "."
+for i in range(0, 255):
+    ip_scan = ip + str(i)
+    print("Scanning " + ip_scan)
+    os.system("sudo nmap -sS " + ip_scan)
 
 
-    response = os.popen("sudo nmap -sS " + ip).read()
+    response = os.popen("sudo nmap -sS " + ip_scan).read()
 
     if "Host seems down" in response:
         print(ip + " is down \n")
     else:
-        os.system("sudo nmap -sS " + ip)
+        os.system("sudo nmap -sS " + ip_scan)
         
-        host = os.popen("host " + ip).read().split(" ")[4]
+        host = os.popen("host " + ip_scan).read().split(" ")[4]
         host = host.split("\n")[0]
         print("The host is: " + host)
         
