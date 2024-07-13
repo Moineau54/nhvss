@@ -90,4 +90,4 @@ The script will then ask you if you want to additionally scan the hosts for vuln
 The script is still in development and may not work as intended. If you encounter any bugs or have any suggestions please let me know.
 
 This script is for educational and security purposes only. I am not responsible for any damage caused by the script. Use at your own risk.
-More on why I made this script can be found in this article on my [blog](https://moineau.xyz/2021/07/25/why-i-made-nhvss/).
+More on why I made this script can be found in this article on my [blog](https://moineau54.github.io/Moineau-s-tech-corner/2024/07/13/Nmap-Host-Vulnerabilty-Scanner-Script.html).
