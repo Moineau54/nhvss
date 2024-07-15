@@ -72,7 +72,22 @@ After you have installed Nmap and Python3 you can install the script by running 
 
 ```bash
 git clone https://github.com/Moineau54/nhvss_python.git
+cd PAtH/TO/nhvss_python
 ```
+
+Now, if you're on linux or Mac, first make the script executable by running the following command:
+
+```bash
+chmod +x install_linux_mac.sh
+```
+
+Then run the script by running the following command:
+
+```bash
+./install_linux_mac.sh
+```
+
+If you're on Windows, run the **install_win.bat** file.
 
 ### How to use it ?
 
