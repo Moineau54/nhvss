@@ -71,7 +71,7 @@ while True:
         break
 
 # Construct base IP address by taking the first three octets from the user's input
-base_ip = "{}.{}.{}.{}".format(*ip.split(".")[:3])
+base_ip = "{}.{}.{}".format(*ip.split(".")[:3])
 
 # Iterate over last octet to scan the whole subnet
 for i in range(256):
@@ -83,9 +83,7 @@ for i in range(256):
         print("{} is down\n".format(ip_scan))
     else:
         host_info = os.popen("host {}".format(ip_scan)).read()
-        host_line = host_info.split("\n")[0].split()[
-            4
-        ]  # Assuming the 5th word is the hostname
+        host_line = host_info.split("\n")[0].split()[4]  # Assuming the 5th word is the hostname
         print("The host is: " + host_line)
 
         # Append IP address and its status to content list
@@ -105,24 +103,33 @@ file_path = scan_history_dir / file_name
 file_path.touch()
 
 with open("config.txt", "r") as file:
-    content = file.read()
+    content_config = file.read()
+    file.close()
 
 if content.__contains__("newest scan = "):
     with open("config.txt", "w") as file:
         file.write("newest scan = scan_history/" + file_name)
+        file.close()
 else:
     with open("config.txt", "w") as file:
         file.write("newest scan = scan_history/" + file_name)
+        file.close()
 
 try:
     with open("scan_history/" + file_name, "a") as file:
-        file.write(content)
+        for content in content:
+            file.write(content)
+        file.close()
 except FileNotFoundError:
     print("Error: File {} not found!")
     exit(1)
 
-print(ip + " is up \n")
-print("Scan completed")
+#print(ip + " is up \n")
+print("Networkmapping completed")
+
+print("\nStarting vulnerability scan")
 
 if vuln_scan:
     vulnerability_scan.vulnerability_scan(file_name)
+
+print("\nVulnerability scan completed")

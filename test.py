@@ -83,9 +83,7 @@ for i in range(10):
         print("{} is down\n".format(ip_scan))
     else:
         host_info = os.popen("host {}".format(ip_scan)).read()
-        host_line = host_info.split("\n")[0].split()[
-            4
-        ]  # Assuming the 5th word is the hostname
+        host_line = host_info.split("\n")[0].split()[4]  # Assuming the 5th word is the hostname
         print("The host is: " + host_line)
 
         # Append IP address and its status to content list
