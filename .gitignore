@@ -1,6 +1,7 @@
 config.txt
 scanned_hosts/
 scan_history/
+test.py
 
 # cache files
 **/**/__pycache__/
