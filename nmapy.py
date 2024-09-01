@@ -62,6 +62,7 @@ content = []
 
 print("Scanning the network")
 
+os.system("ip a")
 while True:
     ip = input("Enter the ip address of the network you would like to scan: ")
 
