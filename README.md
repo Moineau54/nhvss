@@ -73,7 +73,7 @@ After you have installed Nmap and Python3 you can install the script by running 
 
 ```bash
 git clone https://github.com/Moineau54/nhvss_python.git
-cd PatH/TO/nhvss_python
+cd Path/to/nhvss_python
 ```
 
 ### Setup the script
