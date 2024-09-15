@@ -98,7 +98,7 @@ Run the script by running the following command:
 
 ```bash
 # You have to launch the script from the git repository
-python /path/to/nhvss.py
+python /path/to/nmapy.py
 ```
 
 The script will then ask you if you want to additionally scan the hosts for vulnerabilities. If you want to scan the hosts for vulnerabilities type **y** and press enter. If you don't want to scan the hosts for vulnerabilities type **n** and press enter.
