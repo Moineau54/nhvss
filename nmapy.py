@@ -126,12 +126,10 @@ except FileNotFoundError:
     print("Error: File {} not found!")
     exit(1)
 
-#print(ip + " is up \n")
 print("Networkmapping completed")
 
-print("\nStarting vulnerability scan")
-
 if vuln_scan:
+    print("\nStarting vulnerability scan")
     vulnerability_scan.vulnerability_scan(file_name)
 
 print("\nVulnerability scan completed")
