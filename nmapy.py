@@ -76,24 +76,25 @@ base_ip = "{}.{}.{}".format(*ip.split(".")[:3])
 
 # Iterate over last octet to scan the whole subnet
 for i in range(256):
-    ip_scan = "{}.{}".format(base_ip, i)
-    print("Scanning " + ip_scan)
-    response = os.popen("sudo nmap -sS {}".format(ip_scan)).read()
+    if i > 0:
+        ip_scan = "{}.{}".format(base_ip, i)
+        print("\nScanning " + ip_scan)
+        response = os.popen("sudo nmap -sS {}".format(ip_scan)).read()
 
-    if "Host seems down" in response:
-        print("{} is down\n".format(ip_scan))
-    else:
-        host_info = os.popen("host {}".format(ip_scan)).read()
-        host_line = host_info.split("\n")[0].split()[4]  # Assuming the 5th word is the hostname
-        print("The host is: " + host_line)
+        if "Host seems down" in response:
+            print("{} is down\n".format(ip_scan))
+        else:
+            host_info = os.popen("host {}".format(ip_scan)).read()
+            host_line = host_info.split("\n")[0].split()[4]  # Assuming the 5th word is the hostname
+            print("The host is: " + host_line)
 
-        # Append IP address and its status to content list
-        content.append(
-            "{} | {}{}\n".format(
-                ip_scan, host_line, " is up" if not "down" in response else ""
+            # Append IP address and its status to content list
+            content.append(
+                "{} | {}{}\n".format(
+                    ip_scan, host_line, " is up" if not "down" in response else ""
+                )
             )
-        )
-        time.sleep(1)
+            time.sleep(1)
 
 file_name = time.strftime("%Y-%m-%d_%H-%M-%S") + "_hosts.txt"
 # Create scan_history directory if it does not exist.
