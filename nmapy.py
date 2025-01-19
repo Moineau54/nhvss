@@ -55,8 +55,8 @@ def validate_ip(ip: str) -> bool:
 vuln_scan = vuln_scan_switch()
 
 # Create config.txt if it does not exist.
-if not Path.cwd().rglob("config.txt"):
-    Path("config.txt").touch()
+# if not Path.cwd().rglob("config.txt"):
+#     Path("config.txt").touch()
 
 # content = []
 
@@ -85,16 +85,19 @@ for i in range(256):
         if "Host seems down" in response:
             print("{} is down\n".format(ip_scan))
         else:
-            host_info = os.popen("host {}".format(ip_scan)).read()
-            host_line = host_info.split("\n")[0].split()[4]  # Assuming the 5th word is the hostname
+            # host_info = os.popen("host {}".format(ip_scan)).read()
+            host_info = response.split("\n")
+            print(host_info)
+            host_line = host_info[1].split(" ")[4]
+            #host_line = host_info.split("\n")[0].split()[4]  # Assuming the 5th word is the hostname
             print("The host is: " + host_line)
 
             # Append IP address and its status to content list
             content = "{} | {}{}\n".format(ip_scan, host_line, " is up" if not "down" in response else "")
             try:
             	with open("scan_history/" + file_name, "a") as file:
-                    for content in content:
-                        file.write(content)
+                    # for content in content:
+                    file.write(content)
                     file.close()
             except FileNotFoundError:
                 print("Error: File {} not found!")
@@ -108,6 +111,9 @@ scan_history_dir.mkdir(parents=True, exist_ok=True)
 
 file_path = scan_history_dir / file_name
 file_path.touch()
+files_in_dir = os.listdir()
+if "config.txt" not in files_in_dir:
+    os.system("touch config.txt")
 
 with open("config.txt", "r") as file:
     content_config = file.read()
