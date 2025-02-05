@@ -4,6 +4,7 @@ scan_history/
 test.py
 *.c
 test
+.venv/
 # cache files
 **/**/__pycache__/
 __pycache__/

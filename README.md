@@ -90,7 +90,7 @@ Then run the script by running the following command:
 ./install_linux_mac.sh
 ```
 
-If you're on Windows, run the **install_win.bat** file.
+If you're on Windows, isntall [WSL](https://learn.microsoft.com/en-us/windows/wsl/install), clone the repo or extract it from a [release](https://github.com/Moineau54/nhvss_python/releases), and then run the **install_win.bat** file.
 
 ### How to use it ?
 

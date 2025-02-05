@@ -55,10 +55,10 @@ def validate_ip(ip: str) -> bool:
 vuln_scan = vuln_scan_switch()
 
 # Create config.txt if it does not exist.
-if not Path.cwd().rglob("config.txt"):
-    Path("config.txt").touch()
+# if not Path.cwd().rglob("config.txt"):
+#     Path("config.txt").touch()
 
-content = []
+# content = []
 
 print("Scanning the network")
 
@@ -74,6 +74,7 @@ while True:
 # Construct base IP address by taking the first three octets from the user's input
 base_ip = "{}.{}.{}".format(*ip.split(".")[:3])
 
+file_name = time.strftime("%Y-%m-%d_%H-%M-%S") + "_hosts.txt"
 # Iterate over last octet to scan the whole subnet
 for i in range(256):
     if i > 0:
@@ -84,31 +85,41 @@ for i in range(256):
         if "Host seems down" in response:
             print("{} is down\n".format(ip_scan))
         else:
-            host_info = os.popen("host {}".format(ip_scan)).read()
-            host_line = host_info.split("\n")[0].split()[4]  # Assuming the 5th word is the hostname
+            # host_info = os.popen("host {}".format(ip_scan)).read()
+            host_info = response.split("\n")
+            print(host_info)
+            host_line = host_info[1].split(" ")[4]
+            #host_line = host_info.split("\n")[0].split()[4]  # Assuming the 5th word is the hostname
             print("The host is: " + host_line)
 
             # Append IP address and its status to content list
-            content.append(
-                "{} | {}{}\n".format(
-                    ip_scan, host_line, " is up" if not "down" in response else ""
-                )
-            )
+            content = "{} | {}{}\n".format(ip_scan, host_line, " is up" if not "down" in response else "")
+            try:
+            	with open("scan_history/" + file_name, "a") as file:
+                    # for content in content:
+                    file.write(content)
+                    file.close()
+            except FileNotFoundError:
+                print("Error: File {} not found!")
+                exit(1)
             time.sleep(1)
 
-file_name = time.strftime("%Y-%m-%d_%H-%M-%S") + "_hosts.txt"
+
 # Create scan_history directory if it does not exist.
 scan_history_dir = Path("scan_history")
 scan_history_dir.mkdir(parents=True, exist_ok=True)
 
 file_path = scan_history_dir / file_name
 file_path.touch()
+files_in_dir = os.listdir()
+if "config.txt" not in files_in_dir:
+    os.system("touch config.txt")
 
 with open("config.txt", "r") as file:
     content_config = file.read()
     file.close()
 
-if content.__contains__("newest scan = "):
+if content_config.__contains__("newest scan = "):
     with open("config.txt", "w") as file:
         file.write("newest scan = scan_history/" + file_name)
         file.close()
@@ -117,14 +128,7 @@ else:
         file.write("newest scan = scan_history/" + file_name)
         file.close()
 
-try:
-    with open("scan_history/" + file_name, "a") as file:
-        for content in content:
-            file.write(content)
-        file.close()
-except FileNotFoundError:
-    print("Error: File {} not found!")
-    exit(1)
+
 
 print("Networkmapping completed")
 
