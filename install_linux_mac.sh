@@ -97,5 +97,6 @@ source .venv/bin/activate
 
 pip install -r requirements.txt
 
+deactivate
 echo "You are free to go now."
 echo "Have fun!"
